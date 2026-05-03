@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -46,10 +47,21 @@ class Size(models.Model):
     def __str__(self):
         return self.name
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+    
+    class Meta:
+        verbose_name = "Теги"
+        verbose_name_plural = "Теги"
+        
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="products/", null=True, blank=True)
     description = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name="+")
     price = models.FloatField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -62,7 +74,5 @@ class Product(models.Model):
         verbose_name_plural = "Товары"
         
         
- 
     def __str__(self):
         return self.name
-
