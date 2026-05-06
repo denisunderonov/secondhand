@@ -15,7 +15,10 @@
         <p>{{ product.category.name }}</p>
         <p>{{ product.size.name }}</p>
         <p>{{ product.condition }}</p>
+
         
+        <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger">Удалить товар</a>
+        <a href="{% url 'edit_product' product.pk %}" class="btn btn-primary">Редактировать товар</a>
     </div>
 </body>
 </html>

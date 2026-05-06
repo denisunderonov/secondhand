@@ -19,7 +19,7 @@ class User(models.Model):
         return self.name
 
 
-class CategoryManager(models.Manager):
+class CategoryManager(models.Manager): # Собственный модельный менеджер
     def get_products_count(self):
         return self.get_queryset().annotate(product_count=Count("products"))
     
@@ -72,7 +72,7 @@ class ProductManager(models.Manager):
     def get_new_products(self):
         return self.get_queryset().filter(
             created_at__gte=timezone.now() - timedelta(days=7),
-        ).order_by("-created_at")[:3]
+        ).order_by("-created_at")[:3] 
 
     def get_most_cheap_products(self):
         return self.get_queryset().exclude(price__gt=2000).order_by("price")[:3]
@@ -82,7 +82,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="products/", null=True, blank=True)
     description = models.TextField()
-    tags = models.ManyToManyField(Tag, related_name="+")
+    tags = models.ManyToManyField(Tag, related_name="+") 
     price = models.FloatField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
@@ -94,7 +94,7 @@ class Product(models.Model):
     objects = ProductManager()
 
     def get_absolute_url(self):
-        return reverse("product_detail", kwargs={"pk": self.pk})
+        return reverse("product_detail", kwargs={"pk": self.pk}) #kwargs позволяет передать параметры в url
 
     class Meta:
         ordering = ["-created_at"]

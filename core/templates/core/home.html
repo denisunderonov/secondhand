@@ -18,7 +18,7 @@
 
             <div class="navbar-nav">
                 <a class="nav-link active" href="#">Главная</a>
-                <a class="nav-link" href="">Каталог</a>
+                <a class="nav-link" href="{% url 'catalog' %}">Каталог</a>
                 <a class="nav-link" href="#">Бренды</a>
                 <a class="nav-link" href="#">Контакты</a>
             </div>
@@ -40,7 +40,7 @@
                             <p class="card-text text-muted small">Размер: {{ product.size.name }}</p>
                             <p class="card-text text-muted small">{% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
                             <p class="card-text fw-semibold mb-3">{{ product.price }} ₽</p>
-                            <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-primary mt-auto">Подробнее</a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                             <p class="card-text text-muted small">Размер: {{ product.size.name }}</p>
                             <p class="card-text text-muted small">{% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
                             <p class="card-text fw-semibold mb-3">{{ product.price }} ₽</p>
-                            <a href="#" class="btn btn-primary mt-auto">Подробнее</a>
+                            <a href="{{ product.get_absolute_url }}" class="btn btn-primary mt-auto">Подробнее</a>
                         </div>
                     </div>
                 </div>
