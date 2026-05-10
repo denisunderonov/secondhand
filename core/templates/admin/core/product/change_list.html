@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+{% if catalog_price_aggregate.avg_price is not None %}
+<div class="messagelist">
+    <div class="success" style="margin-bottom: 12px;">
+        По всем товарам в базе: средняя цена — <strong>{{ catalog_price_aggregate.avg_price|floatformat:2 }}</strong> ₽,
+        сумма цен (как «итого по витрине») — <strong>{{ catalog_price_aggregate.sum_prices|floatformat:2 }}</strong> ₽
+        <span style="font-weight: normal; opacity: 0.85;">(функции агрегирования Avg, Sum)</span>
+    </div>
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}

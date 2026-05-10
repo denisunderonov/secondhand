@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <style>
+        @font-face {
+            font-family: "{{ pdf_body_font }}";
+            src: url("{{ pdf_font_file }}");
+        }
+        body, h1, table, th, td {
+            font-family: "{{ pdf_body_font }}", Helvetica, sans-serif;
+        }
+        body { font-size: 9pt; }
+        h1 { font-size: 14pt; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+        th, td { border: 1px solid #333; padding: 4px; vertical-align: top; text-align: left; word-wrap: break-word; }
+        th { background: #e8ecef; }
+    </style>
+</head>
+<body>
+    <h1>Товары</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Бренд</th>
+                <th>Категория</th>
+                <th>Размер</th>
+                <th>Состояние</th>
+                <th>Теги</th>
+                <th>Создан</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr>
+                <td>{{ p.pk }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.description|truncatewords:40 }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.brand.name }}</td>
+                <td>{{ p.category.name }}</td>
+                <td>{{ p.size.name }}</td>
+                <td>{{ p.get_condition_display }}</td>
+                <td>{% for t in p.tags.all %}{{ t.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</td>
+                <td>{{ p.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -69,20 +69,27 @@ class Tag(models.Model):
 
 
 class ProductManager(models.Manager):
+    def with_catalog_relations(self):
+        return self.get_queryset().select_related(
+            "brand",
+            "category",
+            "size",
+        ).prefetch_related("tags")
+
     def get_new_products(self):
-        return self.get_queryset().filter(
+        return self.with_catalog_relations().filter(
             created_at__gte=timezone.now() - timedelta(days=7),
-        ).order_by("-created_at")[:3] 
+        ).order_by("-created_at")[:3]
 
     def get_most_cheap_products(self):
-        return self.get_queryset().exclude(price__gt=2000).order_by("price")[:3]
+        return self.with_catalog_relations().exclude(price__gt=2000).order_by("price")[:3]
 
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="products/", null=True, blank=True)
+    image = models.ImageField(upload_to="products/", null=True, blank=True) #blank=True позволяет не вводить изображение
     description = models.TextField()
-    tags = models.ManyToManyField(Tag, related_name="+") 
+    tags = models.ManyToManyField(Tag, through="ProductTag", related_name="+", blank=True)
     price = models.FloatField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="products")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
@@ -100,7 +107,20 @@ class Product(models.Model):
         ordering = ["-created_at"]
         verbose_name = "Товары"
         verbose_name_plural = "Товары"
-        
-        
+
     def __str__(self):
         return self.name
+
+
+class ProductTag(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="tag_links")
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="tag_links")
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("product", "tag")
+        verbose_name = "Назначенный тег"
+        verbose_name_plural = "Назначенные теги"
+
+    def __str__(self):
+        return f"{self.product} — {self.tag}"

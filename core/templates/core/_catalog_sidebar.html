@@ -1,0 +1,15 @@
+<div class="panel-shopper p-3 p-lg-4 sticky-lg-top" style="top: 5.5rem;">
+    <h2 class="h6 text-uppercase text-shopper-muted mb-3">Категории</h2>
+    <ul class="list-group list-group-flush list-group-shopper">
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+            <a href="{% url 'catalog' %}">Все товары</a>
+            <span class="badge rounded-pill badge-shopper-count">{{ total_products_count }}</span>
+        </li>
+        {% for cat in categories %}
+        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+            <a href="{% url 'cat_category' cat.pk %}"{% if active_category_pk and cat.pk == active_category_pk %} class="fw-bold text-accent"{% endif %}>{{ cat.name }}</a>
+            <span class="badge rounded-pill badge-shopper-count">{{ cat.product_count }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,22 @@
+<div class="col">
+    <div class="card card-shopper h-100 overflow-hidden">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top w-100" alt="{{ product.name }}">
+        {% else %}
+        <div class="ratio ratio-4x3 bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center text-shopper-muted small">Нет фото</div>
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ product.name }}</h5>
+            <p class="card-text small text-secondary flex-grow-1">{{ product.description|truncatewords:18 }}</p>
+            <ul class="list-unstyled small text-secondary mb-3">
+                <li>Бренд: {{ product.brand.name }}</li>
+                <li>Категория: {{ product.category.name }}</li>
+                <li>Размер: {{ product.size.name }}</li>
+                <li>Состояние: {{ product.get_condition_display }}</li>
+                <li>Теги: {% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</li>
+            </ul>
+            <p class="fw-bold fs-5 mb-3">{{ product.price }} ₽</p>
+            <a href="{{ product.get_absolute_url }}" class="btn btn-accent mt-auto">Подробнее</a>
+        </div>
+    </div>
+</div>
