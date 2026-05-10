@@ -8,11 +8,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 
 _FONTS_DIR = Path(__file__).resolve().parent / "fonts"
-
-# По умолчанию — DejaVu Sans (полный охват кириллицы, свободная лицензия).
-# Лежит в core/fonts/DejaVuSans.ttf
 _DEJAVU = _FONTS_DIR / "DejaVuSans.ttf"
-# Запасной вариант на macOS — Arial (тоже с кириллицей).
 _ARIAL_MAC = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
 
 
