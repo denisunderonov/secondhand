@@ -12,11 +12,7 @@ _DEJAVU = _FONTS_DIR / "DejaVuSans.ttf"
 _ARIAL_MAC = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
 
 
-def _pdf_font_setup():
-    """
-    xhtml2pdf берёт родительский каталог base path как rootPath для url() в CSS.
-    Поэтому path= должен указывать на файл внутри каталога со шрифтом, а не на сам каталог.
-    """
+def _pdf_font_setup(): # функция для установки шрифта для PDF
     if _DEJAVU.is_file():
         return str(_DEJAVU.resolve()), "DejaVuSans.ttf"
     if _ARIAL_MAC.is_file():
@@ -25,19 +21,18 @@ def _pdf_font_setup():
 
 
 def _link_callback(uri, basepath):
-    """Если относительный путь к шрифту не находится — ищем в core/fonts/."""
     name = Path(str(uri)).name
-    cand = _FONTS_DIR / name
+    cand = _FONTS_DIR / name # проверяем, существует ли файл в каталоге шрифтов
     if cand.is_file():
-        return str(cand.resolve())
+        return str(cand.resolve()) # возвращаем путь к файлу
     return uri
 
 
 def pdf_response_from_template(template_src, context=None, filename="report.pdf"):
-    context = dict(context or {})
+    context = dict(context or {}) # конвертируем контекст в словарь
     base_file, font_filename = _pdf_font_setup()
-    context["pdf_body_font"] = "DocSans"
-    context["pdf_font_file"] = font_filename
+    context["pdf_body_font"] = "DocSans" # устанавливаем шрифт для PDF
+    context["pdf_font_file"] = font_filename # устанавливаем путь к файлу шрифта
 
     template = get_template(template_src)
     html = template.render(context)
