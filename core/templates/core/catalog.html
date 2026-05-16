@@ -3,26 +3,56 @@
 {% block title %}Каталог — Second Hand{% endblock %}
 
 {% block content %}
-<h1 class="page-heading h2 mb-2">Каталог</h1>
-{% if price_stats.price_min is not None %}
-<p class="text-shopper-muted small mb-4 mb-lg-3">
-    Цены по всем товарам в каталоге:<br>
-    минимум <span class="text-shopper-cream">{{ price_stats.price_min|floatformat:2 }} ₽</span>,
-    максимум <span class="text-shopper-cream">{{ price_stats.price_max|floatformat:2 }} ₽</span>
-</p>
-{% endif %}
-<div class="row g-4">
-    <div class="col-lg-3">
-        {% include "core/_catalog_sidebar.html" %}
+<div class="page-hero-compact">
+    <div class="container-xxl px-3">
+        <div class="row align-items-end g-3" data-aos="fade-up">
+            <div class="col-lg-8">
+                <p class="text-shopper-muted text-uppercase small mb-2" style="letter-spacing: 0.1em;">Коллекция</p>
+                <h1 class="section-title font-display mb-0">Каталог</h1>
+            </div>
+            <div class="col-lg-4">
+                {% if price_stats.price_min is not None %}
+                <div class="price-banner" data-aos="fade-up" data-aos-delay="100">
+                    Цены: от <strong class="text-shopper-cream">{{ price_stats.price_min|floatformat:0 }} ₽</strong>
+                    до <strong class="text-shopper-cream">{{ price_stats.price_max|floatformat:0 }} ₽</strong>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    <div class="col-lg-9">
-        <h2 class="h5 page-heading mb-3">Товары</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-            {% for product in products %}
-            {% include "core/_product_card.html" %}
-            {% empty %}
-            <div class="col-12"><p class="text-shopper-muted mb-0">В каталоге пока пусто.</p></div>
-            {% endfor %}
+</div>
+
+<div class="container-xxl px-3 pb-5">
+    <div class="row g-4">
+        <aside class="col-lg-3" data-aos="fade-right">
+            {% include "core/_catalog_sidebar.html" %}
+        </aside>
+        <div class="col-lg-9">
+            <form method="get" class="mb-4" data-aos="fade-up">
+                <div class="input-group">
+                    <input type="search" class="form-control" name="q" value="{{ search_query }}"
+                            aria-label="Поиск по названию">
+                    <button type="submit" class="btn btn-accent">Найти</button>
+                    {% if search_query %}
+                    <a href="{% url 'catalog' %}" class="btn btn-outline-cream">Сбросить</a>
+                    {% endif %}
+                </div>
+            </form>
+            <h2 class="h5 font-display mb-4" data-aos="fade-up">Все товары</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                {% for product in products %}
+                <div class="col" data-aos="fade-up">
+                    {% include "core/_product_card.html" %}
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-state" data-aos="fade-up">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+                        <p class="mb-0">{% if search_query %}По запросу «{{ search_query }}» ничего не найдено.{% else %}В каталоге пока пусто.{% endif %}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

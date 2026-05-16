@@ -3,28 +3,45 @@
 {% block title %}{{ category.name }} — каталог{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-3">
-    <ol class="breadcrumb text-shopper-muted small mb-0">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-shopper-muted">Главная</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'catalog' %}" class="text-decoration-none text-shopper-muted">Каталог</a></li>
-        <li class="breadcrumb-item active text-shopper-cream" aria-current="page">{{ category.name }}</li>
-    </ol>
-</nav>
-
-<h1 class="page-heading h2 mb-4">Категория: {{ category.name }}</h1>
-
-<div class="row g-4">
-    <div class="col-lg-3">
-        {% include "core/_catalog_sidebar.html" with active_category_pk=category.pk %}
+<div class="page-hero-compact">
+    <div class="container-xxl px-3" data-aos="fade-up">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb text-shopper-muted small mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-shopper-muted">Главная</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'catalog' %}" class="text-decoration-none text-shopper-muted">Каталог</a></li>
+                <li class="breadcrumb-item active text-shopper-cream" aria-current="page">{{ category.name }}</li>
+            </ol>
+        </nav>
+        <h1 class="section-title font-display mb-0">{{ category.name }}</h1>
+        <p class="text-shopper-muted mt-2 mb-0">
+            {% if category_has_products %}
+            Товары в выбранной категории
+            {% else %}
+            В этой категории пока нет товаров
+            {% endif %}
+        </p>
     </div>
-    <div class="col-lg-9">
-        <h2 class="h5 page-heading mb-3">Товары</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-            {% for product in products %}
-            {% include "core/_product_card.html" %}
-            {% empty %}
-            <div class="col-12"><p class="text-shopper-muted mb-0">В этой категории пока нет товаров.</p></div>
-            {% endfor %}
+</div>
+
+<div class="container-xxl px-3 pb-5">
+    <div class="row g-4">
+        <aside class="col-lg-3" data-aos="fade-right">
+            {% include "core/_catalog_sidebar.html" with active_category_pk=category.pk %}
+        </aside>
+        <div class="col-lg-9">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                {% for product in products %}
+                <div class="col" data-aos="fade-up">
+                    {% include "core/_product_card.html" %}
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-state" data-aos="fade-up">
+                        <p class="mb-0">В этой категории пока нет товаров.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

@@ -95,6 +95,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
     size = models.ForeignKey(Size, on_delete=models.CASCADE, related_name="products")
     condition = models.CharField(max_length=100, choices=[("new", "Новый"), ("used", "Б/У")])
+    avito_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

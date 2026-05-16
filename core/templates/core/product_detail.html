@@ -3,53 +3,57 @@
 {% block title %}{{ product.name }} — Second Hand{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-3">
-    <ol class="breadcrumb text-shopper-muted small mb-0">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-shopper-muted">Главная</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'catalog' %}" class="text-decoration-none text-shopper-muted">Каталог</a></li>
-        <li class="breadcrumb-item active text-shopper-cream" aria-current="page">{{ product.name }}</li>
-    </ol>
-</nav>
+<div class="container-xxl px-3 py-4">
+    <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-up">
+        <ol class="breadcrumb text-shopper-muted small mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-shopper-muted">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'catalog' %}" class="text-decoration-none text-shopper-muted">Каталог</a></li>
+            <li class="breadcrumb-item active text-shopper-cream" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
 
-<div class="detail-hero p-4 p-lg-5 mb-4">
-    <div class="row g-4 align-items-center">
-        <div class="col-lg-5">
-            {% if product.image %}
-            <img src="{{ product.image.url }}" class="img-fluid rounded-4 shadow" alt="{{ product.name }}">
-            {% else %}
-            <div class="ratio ratio-1x1 bg-black bg-opacity-25 rounded-4 d-flex align-items-center justify-content-center text-shopper-muted">Нет фото</div>
-            {% endif %}
-        </div>
-        <div class="col-lg-7">
-            <h1 class="page-heading display-6 mb-3">{{ product.name }}</h1>
-            <p class="lead text-shopper-muted mb-4">{{ product.description }}</p>
-            <p class="fs-3 fw-bold text-shopper-cream mb-4">{{ product.price }} ₽</p>
-            <dl class="row row-cols-1 row-cols-sm-2 g-3 small text-shopper-muted mb-4">
-                <div class="col">
-                    <dt class="mb-1">Бренд</dt>
-                    <dd class="mb-0 text-shopper-cream">{{ product.brand.name }}</dd>
+    <div class="detail-hero p-4 p-lg-5" data-aos="fade-up">
+        <div class="row g-4 g-lg-5 align-items-start">
+            <div class="col-lg-5">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="detail-hero__image img-fluid w-100" alt="{{ product.name }}">
+                {% else %}
+                <div class="detail-hero__image ratio ratio-1x1 d-flex align-items-center justify-content-center rounded-4 bg-black bg-opacity-25">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-shopper-muted" opacity="0.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
                 </div>
-                <div class="col">
-                    <dt class="mb-1">Категория</dt>
-                    <dd class="mb-0 text-shopper-cream">{{ product.category.name }}</dd>
+                {% endif %}
+            </div>
+            <div class="col-lg-7">
+                <span class="badge rounded-pill badge-shopper-count mb-3">{{ product.get_condition_display }}</span>
+                <h1 class="font-display display-6 mb-3">{{ product.name }}</h1>
+                <p class="lead text-shopper-muted mb-4">{{ product.description }}</p>
+                <p class="display-6 fw-bold text-accent mb-4">{{ product.price|floatformat:0 }} ₽</p>
+
+                <dl class="detail-specs mb-4">
+                    <div class="detail-spec">
+                        <dt>Бренд</dt>
+                        <dd>{{ product.brand.name }}</dd>
+                    </div>
+                    <div class="detail-spec">
+                        <dt>Категория</dt>
+                        <dd>{{ product.category.name }}</dd>
+                    </div>
+                    <div class="detail-spec">
+                        <dt>Размер</dt>
+                        <dd>{{ product.size.name }}</dd>
+                    </div>
+                    <div class="detail-spec">
+                        <dt>Теги</dt>
+                        <dd>{% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd>
+                    </div>
+                </dl>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ product.avito_url }}" target="_blank" class="btn btn-outline-primary rounded-pill">Купить на Avito</a>
+                    <a href="{% url 'edit_product' product.pk %}" class="btn btn-accent">Редактировать</a>
+                    <a href="{% url 'delete_product' product.pk %}" class="btn btn-outline-danger rounded-pill">Удалить</a>
+                    <a href="{% url 'catalog' %}" class="btn btn-outline-cream ms-sm-auto rounded-pill">← Каталог</a>
                 </div>
-                <div class="col">
-                    <dt class="mb-1">Размер</dt>
-                    <dd class="mb-0 text-shopper-cream">{{ product.size.name }}</dd>
-                </div>
-                <div class="col">
-                    <dt class="mb-1">Состояние</dt>
-                    <dd class="mb-0 text-shopper-cream">{{ product.get_condition_display }}</dd>
-                </div>
-                <div class="col-12">
-                    <dt class="mb-1">Теги</dt>
-                    <dd class="mb-0 text-shopper-cream">{% for tag in product.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd>
-                </div>
-            </dl>
-            <div class="d-flex flex-wrap gap-2">
-                <a href="{% url 'edit_product' product.pk %}" class="btn btn-accent">Редактировать</a>
-                <a href="{% url 'delete_product' product.pk %}" class="btn btn-outline-danger">Удалить товар</a>
-                <a href="{% url 'catalog' %}" class="btn btn-outline-cream ms-sm-auto">Назад в каталог</a>
             </div>
         </div>
     </div>

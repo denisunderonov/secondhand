@@ -89,7 +89,7 @@ class ProductAdmin(admin.ModelAdmin):
     price_display.short_description = "Цена"
 
     def tags_display(self, obj):
-        return ", ".join(obj.tags.values_list("name", flat=True))
+        return ", ".join(obj.tags.values_list("name", flat=True)) # values_list("name", flat=True) позволяет получить список тегов в виде строки
     tags_display.short_description = "Теги"
 
     @admin.action(description=_("Скачать выбранные товары в PDF")) # action позволяет добавить действие в админку

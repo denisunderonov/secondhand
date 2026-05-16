@@ -1,43 +1,103 @@
 {% extends "core/base.html" %}
 
-{% block title %}Second Hand — главная{% endblock %}
+{% block title %}Second Hand — винтаж и б/у{% endblock %}
 
 {% block content %}
-<div class="row align-items-end g-3 mb-4">
-    <div class="col-lg-8">
-        <p class="text-shopper-muted text-uppercase small mb-1 letter-spacing-1">Винтаж и б/у в спокойной палитре</p>
-        <h1 class="page-heading display-6 mb-0">Добро пожаловать</h1>
-    </div>
-    <div class="col-lg-4 text-lg-end">
-        <a href="{% url 'catalog' %}" class="btn btn-outline-cream">Весь каталог</a>
-    </div>
-</div>
-
-<section class="py-2 mb-5">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="h4 page-heading mb-0">Новинки</h2>
-        <span class="badge rounded-pill badge-shopper-count">7 дней</span>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-        {% for product in new_products %}
-        {% include "core/_product_card.html" %}
-        {% empty %}
-        <div class="col-12"><p class="text-shopper-muted mb-0">Пока нет свежих поступлений.</p></div>
-        {% endfor %}
+<section class="hero-section">
+    <div class="container-xxl px-3">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <span class="hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8Z"/>
+                    </svg>
+                    Осознанный шопинг
+                </span>
+                <h1 class="hero-title font-display">
+                    Стиль с <span class="accent">историей</span>,<br>ценой с душой
+                </h1>
+                <p class="hero-lead">
+                    Second Hand — витрина б/у и винтажных вещей. Качественные бренды, честное состояние и спокойные цены.
+                </p>
+                <div class="hero-actions">
+                    <a href="{% url 'catalog' %}" class="btn btn-accent btn-lg px-4">Смотреть каталог</a>
+                    <a href="#new-arrivals" class="btn btn-outline-cream btn-lg px-4">Новинки недели</a>
+                </div>
+                <div class="stats-strip" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-item">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">дней — новинки</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{{ products_total_count }}</div>
+                        <div class="stat-label">товаров в каталоге</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">второй шанс</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <span class="hero-orb hero-orb--1"></span>
+                <span class="hero-orb hero-orb--2"></span>
+                {% include "core/_hero_svg.html" %}
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="py-2">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="h4 page-heading mb-0">Самые дешёвые</h2>
-        <span class="badge rounded-pill badge-shopper-count">до 2000 ₽</span>
+<section id="new-arrivals" class="section-block">
+    <div class="container-xxl px-3">
+        <div class="section-header" data-aos="fade-up">
+            <div>
+                <h2 class="section-title font-display">Новинки</h2>
+                <p class="section-sub mb-0">Свежие поступления за последние 7 дней</p>
+            </div>
+            <span class="badge rounded-pill badge-shopper-count px-3 py-2">7 дней</span>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            {% for product in new_products %}
+            <div class="col" data-aos="fade-up">
+                {% include "core/_product_card.html" %}
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state" data-aos="fade-up">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64"><path d="M20 7H4M10 11v6M14 11v6M5 7l1 12a2 2 0 002 2h8a2 2 0 002-2l1-12M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2"/></svg>
+                    <p class="mb-0">Пока нет свежих поступлений — загляните в каталог.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-        {% for product in most_cheap_products %}
-        {% include "core/_product_card.html" %}
-        {% empty %}
-        <div class="col-12"><p class="text-shopper-muted mb-0">Товаров в этом диапазоне нет.</p></div>
-        {% endfor %}
+</section>
+
+<section class="section-block pt-0">
+    <div class="container-xxl px-3">
+        <div class="section-header" data-aos="fade-up">
+            <div>
+                <h2 class="section-title font-display">Самые доступные</h2>
+                <p class="section-sub mb-0">Подборка до 2000 ₽</p>
+            </div>
+            <span class="badge rounded-pill badge-shopper-count px-3 py-2">до 2000 ₽</span>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+            {% for product in most_cheap_products %}
+            <div class="col" data-aos="fade-up">
+                {% include "core/_product_card.html" %}
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state" data-aos="fade-up">
+                    <p class="mb-0">В этом диапазоне пока пусто.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{% url 'catalog' %}" class="btn btn-outline-cream btn-lg">Весь каталог →</a>
+        </div>
     </div>
 </section>
 {% endblock %}
